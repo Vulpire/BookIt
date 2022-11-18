@@ -10,11 +10,19 @@
     <script src="app.js"></script>
     <div class="topnav">
         <a class="active" href="/">Home</a>
-        <a href="/new">Create Appointment</a>
+        <a href="/apt">Create Appointment</a>
         <a href="/group">Edit Groups</a>
+        <a href="/user/signup">Signup</a>  
         <%if(user){ console.log(user)%>
           <a href="/user/signout">Sign Out</a>
         <%} else {%>
           <a href="/user/login">Login</a>
         <%}%>        
+        <div class="dropdownNav" >
+          <button class="dropbtnNav">Notifications</button>
+          <div class="dropdown-contentNav">
+            <a href="/date">Date</a>
+            <a href="/priority">Priority</a>
+          </div>
+        </div>
     </div>

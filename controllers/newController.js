@@ -13,3 +13,20 @@ exports.new = (req, res, next)=>{
     .then(res.redirect('/'))
     .catch(err=>next(err));
 };
+
+exports.id = (req, res, next)=>{
+    let id = req.params.id;
+    Appointment.findById(id)
+    .then(appointment=>{
+        if(appointment){
+            user = req.session.user;
+            console.log(appointment);
+            return res.render('./view', {appointment, user});
+        } else {
+            let err = new Error('Cannot find a appointment with id ' + id);
+            err.status = 404;
+            next(err);
+        }
+    })
+    .catch(err=>next(err))
+};

@@ -55,32 +55,63 @@ app.get('/', (req, res)=>{
         res.render('index', {user});    
     }    
 });
-app.get('/:id', (req, res, next)=>{
-    let id = req.params.id;
-    if(!id.match(/^[0-9a-fA-F]{24}$/)) {
-        let err = new Error('Invalid appointment id');
-        err.status = 400;
-        return next(err);
-    }
-    Appointment.findById(id)
-    .then(appointment=>{
-        if(appointment){
-            user = req.session.user;
-            return res.render('./view', {appointment, user});
-        } else {
-            let err = new Error('Cannot find a appointment with id ' + id);
-            err.status = 404;
-            next(err);
-        }
-    })
-    .catch(err=>next(err))
+
+//Get
+app.get('/date', (req, res)=>{
+    if(req.session.user){        
+        user = true;
+        Appointment.find({$or: [{author: req.session.user}, {}]}).sort({date:1})
+        .then(appointments =>{
+            res.render('index', {user, appointments});
+        })
+        .catch()        
+    } else {
+        appointments = [];
+        user = false;
+        res.render('index', {user});    
+    }    
 });
 
-app.use('/new', newRoutes);
+app.get('/priority', (req, res)=>{
+    if(req.session.user){        
+        user = true;
+        Appointment.find({$or: [{author: req.session.user}, {}]})
+        .then(query =>{
+                appointments = Array.from(query).sort(function(doc1, doc2){
+                if(doc1.priority === 'High'){
+                    val1 = 3;
+                } else if (doc1.priority === 'Medium'){
+                    val1 = 2;
+                } else if(doc1.priority === 'Low'){
+                    val1 = 1;
+                }
+
+                if(doc2.priority === 'High'){
+                    val2 = 3;
+                } else if (doc2.priority === 'Medium'){
+                    val2 = 2;
+                } else if(doc2.priority === 'Low'){
+                    val2 = 1;
+                }
+                return val2-val1;
+            })
+            res.render('index', {user, appointments});
+        })
+        .catch()        
+    } else {
+        appointments = [];
+        user = false;
+        res.render('index', {user});    
+    }    
+});
+
+
+app.use('/apt', newRoutes);
 
 app.use('/user', userRoutes);
 
 app.use('/group', groupRoutes);
+
 /*
 app.use((req, res, next) => {
     let err = new Error('The server cannot locate ' + req.url);
