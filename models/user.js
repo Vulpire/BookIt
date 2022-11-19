@@ -7,7 +7,10 @@ const userSchema = new Schema({
     lastName: {type: String, required: [true, 'cannot be empty']},
     userName: {type: String, required: [true, 'cannot be empty']},
     email: {type: String, required: [true, 'cannot be empty'], unique: true},
-    password: {type: String, required: [true, 'cannot be empty']}
+    password: {type: String, required: [true, 'cannot be empty']},
+    invites: {type: Array, required: [false]},
+    groups: {type: Array, required: [false]},
+    appointments: {type: Array, required: [false]}
 });
 
 //replace plain text with hash before save

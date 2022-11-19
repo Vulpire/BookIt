@@ -1,30 +1,34 @@
+const session = require('express-session');
 const User = require('../models/user');
 
-exports.signup = (req, res)=>{
-    res.render('./user/signup');
+exports.signup = (req, res, next)=>{
+    user = req.session.user;
+    res.render('./user/signup', {user});    
 }
 
 exports.login = (req, res)=>{
-    res.render('./user/login');
+    user = req.session.user;
+    res.render('./user/login', {user});
 }
 
 exports.create = (req, res, next)=>{
-    let user = new User(req.body);
-    user.save()
-    .then(()=>{
-        res.redirect('/user/login')
-    })
-    .catch(err=>{
-        if(err.name === 'ValidationError'){
-            res.redirect('/user/new');
-        }
-
-        if(err.code === 11000){
-            res.redirect('/user/new');
-        }
-        next(err)
-    })
-
+    
+        let user = new User(req.body);
+        user.save()
+        .then(()=>{
+            res.redirect('/user/login')
+        })
+        .catch(err=>{
+            if(err.name === 'ValidationError'){
+                res.redirect('/user/new');
+            }
+    
+            if(err.code === 11000){
+                res.redirect('/user/new');
+            }
+            next(err)
+        })
+    
 };
 
 exports.auth = (req, res, next)=>{

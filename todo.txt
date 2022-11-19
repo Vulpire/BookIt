@@ -10,8 +10,6 @@ sort appointments //importance or date
 color code
 dashboard
 
-//appointments
-update app creation to include group
 
 //notifications
 all of it 

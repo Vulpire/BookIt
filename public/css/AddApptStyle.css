@@ -100,7 +100,7 @@ form{
     top: 30%;
     left: 60%;
 }
-#title,#purpose, #startTime, #endTime ,#importance,#priority, #date{
+#title,#purpose, #startTime, #endTime ,#importance,#priority, #date, #group{
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;

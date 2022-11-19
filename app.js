@@ -7,7 +7,7 @@ const newRoutes = require('./routes/newRoutes.js');
 const userRoutes = require('./routes/userRoutes.js');
 const groupRoutes = require('./routes/groupRoutes.js');
 const Appointment = require('./models/appointment');
-const appointment = require('./models/appointment');
+const User = require('./models/user');
 
 //create app
 const app = express();
@@ -44,9 +44,14 @@ app.use(session({
 app.get('/', (req, res)=>{
     if(req.session.user){        
         user = true;
-        Appointment.find({$or: [{author: req.session.user}, {}]})
-        .then(appointments =>{
-            res.render('index', {user, appointments});
+        User.findById(req.session.user)
+        .then(user =>{
+            let appointmentsIds = Array.from(user.appointments);
+            Appointment.find().where("_id").in(appointmentsIds)
+            .then(appointments=>{
+                res.render('index', {user, appointments});
+            })
+            .catch()            
         })
         .catch()        
     } else {
