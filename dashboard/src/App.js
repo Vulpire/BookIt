@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import { Navbar, Footer, Sidebar} from './components';
-import { Ecommerce, Calendar,} from './pages';
+import { Calendar, Schedule} from './pages';
 import './App.css';
 
 import { useStateContext } from './contexts/ContextProvider';
@@ -42,7 +42,7 @@ const App = () => {
               <Routes>
                 {/* dashboard  */}
                 <Route path="/" element={(<Calendar />)} />
-                <Route path="/ecommerce" element={(<Calendar />)} />
+                <Route path="/schedule" element={(<Schedule />)} />
 
                 {/* pages  */}
                 <Route path="/calendar" element={<Calendar />} />

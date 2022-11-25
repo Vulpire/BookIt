@@ -33,6 +33,7 @@ const Scheduler = () => {
     fetch('/api').then(res=>{
         if(res.ok){
             let json = res.json()
+            console.log(json)
             return json
         }
     }).then(jsonResponse => setInitialState(jsonResponse))
@@ -46,7 +47,7 @@ const Scheduler = () => {
         height="650px"
         ref={(schedule) => setScheduleObj(schedule)}
         selectedDate={new Date(2021, 0, 10)}
-        eventSettings={{ dataSource: data, allowEditing: false, allowDeleting: false}}
+        eventSettings={{ dataSource: initialState, allowEditing: false, allowDeleting: false}}
         allowDragAndDrop={false}
         dragStart={onDragStart}
         allowResizing={false}  
