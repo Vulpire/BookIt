@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import { Navbar, Footer, Sidebar} from './components';
-import { Calendar, Schedule} from './pages';
+import { Calendar, Schedule, Kanban} from './pages';
 import './App.css';
 
 import { useStateContext } from './contexts/ContextProvider';
@@ -41,13 +41,13 @@ const App = () => {
             <div>
               <Routes>
                 {/* dashboard  */}
-                <Route path="/" element={(<Calendar />)} />
+                <Route path="/" element={(<Schedule />)} />
                 <Route path="/schedule" element={(<Schedule />)} />
 
                 {/* pages  */}
-                <Route path="/calendar" element={<Calendar />} />
+                <Route path="/calendar" element={<Schedule />} />
                 <Route path="/creategroup" element={<CreateGroup />} />
-
+                <Route path="/event/:id" element={<Kanban />} />
               </Routes>
             </div>
             <Footer />

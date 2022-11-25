@@ -4,10 +4,10 @@ import { AiOutlineCalendar, AiOutlineUsergroupAdd, AiOutlineTeam } from 'react-i
 
 export const plinks = [
     {
-      title: 'Dashboard',
+      title: 'Appointments',
       links: [
         {
-            name: 'calendar',
+            name: 'schedule',
             icon: <AiOutlineCalendar />,
         },
       ],
