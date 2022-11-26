@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>BookIt</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .topnav {
+            overflow: hidden;
+            background-color: #333;
+        }
+
+        .topnav a {
+            float: left;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 17px;
+        }
+
+        .topnav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .topnav a.active {
+            background-color: #1b65c5;
+            color: white;
+        }
+    </style>
+
+</head>
+
+<!-- Taskbar Class -->
+<div class="topnav">
+    <a class="active" href="home.html">Home</a>
+    <a href="#!">Create Appointment</a>
+    <a href="#!">Edit Groups </a>
+    <a href="groups.html">Sign up</a>
+    <a href="groups.html">Log in</a>
+    <img alt="logo" src="imgs/version4.png">
+</div>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Calendar</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="main.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+<body>
+
+<div class="container">
+    <div class="calendar">
+        <div class="month">
+            <i class="fas fa-angle-left prev"></i>
+            <div class="date">
+                <h1></h1>
+                <p></p>
+            </div>
+            <i class="fas fa-angle-right next"></i>
+        </div>
+        <div class="weekdays">
+            <div>Sun</div>
+            <div>Mon</div>
+            <div>Tue</div>
+            <div>Wed</div>
+            <div>Thu</div>
+            <div>Fri</div>
+            <div>Sat</div>
+        </div>
+        <div class="days"></div>
+    </div>
+</div>
+
+<!-- Side navigation -->
+<div class="sidenav">
+    <h1>Sort By Priority </h1>
+
+    <button id="high" type="button" onclick="">High</button>
+    <button id="med" type="button">Medium</button>
+    <button id="low" type="button">Low</button>
+</div>
+<script src="MainJS.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

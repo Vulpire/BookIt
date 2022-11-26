@@ -1,13 +1,14 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { MdOutlineCancel } from 'react-icons/md';
 import {FaUserAlt} from 'react-icons/fa';
 
 import { Button } from '.';
-import { userProfileData } from '../data/dummy';
+import { userProfileData } from '../data/data';
 import { useStateContext } from '../contexts/ContextProvider';
 
 const UserProfile = () => {
   const { currentColor } = useStateContext();
+  // get auth state
 
   return (
     <div className="nav-item absolute right-1 top-16 bg-white dark:bg-[#42464D] p-8 rounded-lg w-96">
@@ -51,7 +52,7 @@ const UserProfile = () => {
         <Button
           color="white"
           bgColor={currentColor}
-          text="Logout"
+          text= {'Signout'}
           borderRadius="10px"
           width="full"
         />

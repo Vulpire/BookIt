@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AiOutlineMenu } from 'react-icons/ai';
 import { FaUserAlt } from 'react-icons/fa';
 import { RiNotification3Line } from 'react-icons/ri';
@@ -26,8 +26,35 @@ const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
 );
 
 const Navbar = () => {
-  const { currentColor, activeMenu, setActiveMenu, handleClick, isClicked, setScreenSize, screenSize } = useStateContext();
+  const [auth, setAuth] = useState(false);
+  const [uName, setuName] = useState("");
+  const [notifs, setNotifs] = useState(false);
+  // get user
+  useEffect(()=>{
+    fetch('/api/user').then(res=>{
+      console.log(res)
+      if(res.status == 200){
+        return true
+      } else {
+        return false
+      }
+    }).then(jsonResponse =>{
+      setAuth(jsonResponse)
+      setuName("Nick")
+    })
+  }, [auth])
+  console.log(auth)
 
+  //get notifs
+  useEffect(()=>{
+    if(auth){
+      fetch('/api/areNotifs').then(res=>{
+
+      }).then()
+    }
+  },[auth])
+
+  const { currentColor, activeMenu, setActiveMenu, setScreenSize, handleClick, isClicked,  screenSize } = useStateContext(); 
   useEffect(() => {
     const handleResize = () => setScreenSize(window.innerWidth);
 
@@ -53,23 +80,42 @@ const Navbar = () => {
 
       <NavButton title="Menu" customFunc={handleActiveMenu} color={currentColor} icon={<AiOutlineMenu />} />
       <div className="flex">
+        {notifs ? 
         <NavButton title="Notification" dotColor="rgb(254, 201, 15)" customFunc={() => handleClick('notification')} color={currentColor} icon={<RiNotification3Line />} />
-        <TooltipComponent content="Profile" position="BottomCenter">
-          <div
-            className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
-            onClick={() => handleClick('userProfile')}
-          >
-            <FaUserAlt className="w-8 h-8"/>
-            <p>
-              <span className="text-gray-400 text-14">Hi,</span>{' '}
-              <span className="text-gray-400 font-bold ml-1 text-14">
-                Michael
-              </span>
-            </p>
-            <MdKeyboardArrowDown className="text-gray-400 text-14" />
-          </div>
-        </TooltipComponent>
-
+        :
+        <NavButton title="Login to see notifications" icon={<RiNotification3Line />} />
+        }
+          {auth ? 
+          <TooltipComponent content="Signin" position="BottomCenter">
+            <div
+              className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
+              onClick={() => handleClick('userProfile')}
+            >
+              <FaUserAlt className="w-8 h-8"/>
+              <p>
+                <span className="text-gray-400 text-14">Hi,</span>{' '}
+                <span className="text-gray-400 font-bold ml-1 text-14">
+                  {uName}
+                </span>
+              </p>
+              <MdKeyboardArrowDown className="text-gray-400 text-14" />
+            </div>
+            </TooltipComponent>
+          :
+          <TooltipComponent content="Sign in" position="BottomCenter">
+          <a href='/login'>
+            <div
+              className="flex cursor-pointer p-1 h-6/8 bg-blue-500 hover:bg-blue-600 align-middle mt-2 w-24 text-center"
+            >
+              <p className='text-center m-auto'>
+                <span className="text-white text-14 text-center">
+                  Sign in
+                </span>
+              </p>
+            </div>
+          </a>
+          </TooltipComponent>
+          }
         {isClicked.notification && (<Notification />)}
         {isClicked.userProfile && (<UserProfile />)}
       </div>

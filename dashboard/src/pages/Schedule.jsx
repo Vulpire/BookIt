@@ -6,10 +6,7 @@ import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState} from "react";
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import "../App.css";
-import Kanban from "./Kanban";
 
 const locales = {
     "en-US": require("date-fns/locale/en-US"),
@@ -46,67 +43,12 @@ function App() {
                 startAccessor="start"
                 endAccessor="end"
                 titleAccessor="title"
+                views={["month", "agenda"]}
                 style={{ height: 700, margin: "50px" }}
+                messages={{agenda:"Table", month:"Calendar"}}
             />
         </div>
     );
 }
 
 export default App;
-
-// const events = [
-//     {
-//         title: "Big Meeting",
-//         allDay: true,
-//         start: new Date(2021, 6, 0),
-//         end: new Date(2021, 6, 0),
-//     },
-//     {
-//         title: "Vacation",
-//         start: new Date(2022, 11, 24),
-//         end: new Date(2022, 11, 25),
-//     },
-//     {
-//         title: "Conference",
-//         start: new Date(2021, 6, 20),
-//         end: new Date(2021, 6, 23),
-//     },
-// ];
-
-
-    //const [newEvent, setNewEvent] = useState({ title: "", start: "", end: "" });
-    // const [allEvents, setAllEvents] = useState(events);
-
-
-    // <h1>Calendar</h1>
-    // <h2>Add New Event</h2>
-    // <div>
-    //     <input type="text" placeholder="Add Title" style={{ width: "20%", marginRight: "10px" }} value={newEvent.title} onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })} />
-    //     <DatePicker placeholderText="Start Date" style={{ marginRight: "10px" }} selected={newEvent.start} onChange={(start) => setNewEvent({ ...newEvent, start })} />
-    //     <DatePicker placeholderText="End Date" selected={newEvent.end} onChange={(end) => setNewEvent({ ...newEvent, end })} />
-    //     <button stlye={{ marginTop: "10px" }} onClick={handleAddEvent}>
-    //         Add Event
-    //     </button>
-    // </div>
-
-
-    // function handleAddEvent() {
-        
-    //     for (let i=0; i<allEvents.length; i++){
-
-    //         const d1 = new Date (allEvents[i].start);
-    //         const d2 = new Date(newEvent.start);
-    //         const d3 = new Date(allEvents[i].end);
-    //         const d4 = new Date(newEvent.end);
-
-    //         if (
-    //           ( (d1  <= d2) && (d2 <= d3) ) || ( (d1  <= d4) &&
-    //             (d4 <= d3) )
-    //           )
-    //         {   
-    //             alert("CLASH"); 
-    //             break;
-    //          }    
-    //     }               
-    //     setAllEvents([...allEvents, newEvent]);
-    // }

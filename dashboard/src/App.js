@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import { Navbar, Footer, Sidebar} from './components';
-import { Calendar, Schedule, Kanban} from './pages';
+import { Schedule, NewEvent, Event, Groups } from './pages';
 import './App.css';
 
 import { useStateContext } from './contexts/ContextProvider';
@@ -40,14 +40,17 @@ const App = () => {
             </div>
             <div>
               <Routes>
-                {/* dashboard  */}
+                {/* Home  */}
                 <Route path="/" element={(<Schedule />)} />
                 <Route path="/schedule" element={(<Schedule />)} />
 
-                {/* pages  */}
-                <Route path="/calendar" element={<Schedule />} />
-                <Route path="/creategroup" element={<CreateGroup />} />
-                <Route path="/event/:id" element={<Kanban />} />
+                {/* Appts / Events  */}
+                <Route path="/newEvent/" element={<NewEvent />} />
+                <Route path="/event/:id" element={<Event />} />
+
+                {/* Groups */}
+                <Route path="/groups" element={<Groups />} /> {/* Display user groups */}
+                <Route path="/newGroup" element={<CreateGroup />} /> {/* Create a new group */}
               </Routes>
             </div>
             <Footer />
