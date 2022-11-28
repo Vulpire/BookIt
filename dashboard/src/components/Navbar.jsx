@@ -27,22 +27,26 @@ const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
 
 const Navbar = () => {
   const [auth, setAuth] = useState(false);
+  const [render, setRender] = useState(false);
   const [uName, setuName] = useState("");
   const [notifs, setNotifs] = useState(false);
-  // get user
+  const isAuth = localStorage.getItem('auth');
+  function updateAuth(){
+    setAuth(!auth)
+  }
+
   useEffect(()=>{
     fetch('/api/user').then(res=>{
       console.log(res)
       if(res.status == 200){
-        return true
+        setAuth(true)
       } else {
-        return false
+        setAuth(false)
       }
-    }).then(jsonResponse =>{
-      setAuth(jsonResponse)
+    }).then(() =>{
       setuName("Nick")
     })
-  }, [auth])
+  }, [])
   console.log(auth)
 
   //get notifs
@@ -52,7 +56,7 @@ const Navbar = () => {
 
       }).then()
     }
-  },[auth])
+  },[render])
 
   const { currentColor, activeMenu, setActiveMenu, setScreenSize, handleClick, isClicked,  screenSize } = useStateContext(); 
   useEffect(() => {
@@ -80,10 +84,16 @@ const Navbar = () => {
 
       <NavButton title="Menu" customFunc={handleActiveMenu} color={currentColor} icon={<AiOutlineMenu />} />
       <div className="flex">
-        {notifs ? 
-        <NavButton title="Notification" dotColor="rgb(254, 201, 15)" customFunc={() => handleClick('notification')} color={currentColor} icon={<RiNotification3Line />} />
+        {auth ? 
+          <>
+          {notifs ? 
+            <NavButton title="Notification" dotColor="rgb(254, 201, 15)" customFunc={() => handleClick('notification')} color={currentColor} icon={<RiNotification3Line />} />
+          :
+            <NavButton title="Notification" customFunc={() => handleClick('notification')} color={currentColor} icon={<RiNotification3Line />} />
+          }
+          </>
         :
-        <NavButton title="Login to see notifications" icon={<RiNotification3Line />} />
+          <NavButton title="Login to see notifications" icon={<RiNotification3Line />} />
         }
           {auth ? 
           <TooltipComponent content="Signin" position="BottomCenter">
@@ -117,7 +127,7 @@ const Navbar = () => {
           </TooltipComponent>
           }
         {isClicked.notification && (<Notification />)}
-        {isClicked.userProfile && (<UserProfile />)}
+        {isClicked.userProfile && (<UserProfile onClick={updateAuth}/>)}
       </div>
     </div>
   );

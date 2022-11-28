@@ -1,4 +1,3 @@
-const newM = require('../models/new');
 const Appointment = require('../models/appointment');
 const User = require('../models/user');
 const Group = require('../models/group');

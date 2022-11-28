@@ -1,15 +1,33 @@
 import React, {useEffect, useState} from 'react';
 import { MdOutlineCancel } from 'react-icons/md';
 import {FaUserAlt} from 'react-icons/fa';
+import { useNavigate } from "react-router-dom";
 
 import { Button } from '.';
 import { userProfileData } from '../data/data';
 import { useStateContext } from '../contexts/ContextProvider';
 
-const UserProfile = () => {
-  const { currentColor } = useStateContext();
+const UserProfile = ({onClick}) => {
+  const { setIsClicked, initialState } = useStateContext();
   // get auth state
+  let navigate = useNavigate();
+  function loginRed(){
+      navigate('/schedule')
+  }
 
+  function handleSubmit(){
+    setIsClicked(initialState)
+
+    fetch('/api/logout').then(res=>{
+      console.log('response')
+    if(res.ok){
+      loginRed()
+    } else {
+      console.log("error")
+    }
+    onClick()
+    })
+  };
   return (
     <div className="nav-item absolute right-1 top-16 bg-white dark:bg-[#42464D] p-8 rounded-lg w-96">
       <div className="flex justify-between items-center">
@@ -49,13 +67,14 @@ const UserProfile = () => {
         ))}
       </div>
       <div className="mt-5">
-        <Button
-          color="white"
-          bgColor={currentColor}
-          text= {'Signout'}
-          borderRadius="10px"
-          width="full"
-        />
+        
+        <button
+          type="button"
+          onClick={handleSubmit}
+          className={`p-3 w-full hover:drop-shadow-xl bg-blue-600 color-white`}
+        >
+          Signout
+        </button>
       </div>
     </div>
 

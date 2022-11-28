@@ -9,6 +9,7 @@ const groupRoutes = require('./routes/groupRoutes.js');
 const Appointment = require('./models/appointment');
 const apiRoutes = require ('./routes/apiRoutes');
 const User = require('./models/user');
+const bp = require('body-parser');
 
 //create app
 const app = express();
@@ -19,6 +20,7 @@ let port = 3001;
 let host = 'localhost';
 app.set('view engine', 'ejs');
 
+app.use(bp.json());
 //conenct to db and start server
 mongoose.connect(uri,{useNewUrlParser: true, useUnifiedTopology: true})
 .then(()=>{

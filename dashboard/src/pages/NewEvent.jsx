@@ -1,6 +1,8 @@
-import React, { useState} from "react";
+import React, { useState, useEffect} from "react";
 import DateTimePicker from 'react-datetime-picker'
 import {MdEventAvailable} from 'react-icons/md';
+import AsyncSelect from 'react-select/async';
+import Select from 'react-select';
 
 const NewEvent = () => {
   let handleSubmit = (e) => {
@@ -10,8 +12,10 @@ const NewEvent = () => {
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify(
         {title: title,
-          start: startValue,
-          end: endValue,
+        start: startValue,
+        end: endValue,
+        group: group,
+        priority: priority
       })
     }).then(res=>{
       if(res.status !== 200){
@@ -19,10 +23,36 @@ const NewEvent = () => {
       }
     })
   };
+
+  const getData = () =>{
+    let temp = [];
+    return fetch('/api/groupsAdmin').then(res=>{
+      if(res.ok){
+        let json = res.json()
+        return json;
+      }
+    }).then(data=>{
+      data.forEach(group => {
+        temp.push({
+          "value": group.groupName,
+          "label": group.groupName
+        })
+      });
+      return temp
+    })
+  }
+
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
+  const [group, setGroup] = useState("");
+  const [priority, setPriority] = useState("");
   const [startValue, onStartChange] = useState(new Date());
   const [endValue, onEndChange] = useState(new Date());
+  const priorityOptions = [
+    {value: 'low', label: 'Low' },
+    {value: 'med', label: 'Medium' },
+    {value: 'high', label: 'High' },
+  ]
   return (
     <div>      
       <div className="flex flex-col items-center min-h-screen pt-6 justify-center sm:pt-0 bg-gray-50">
@@ -34,6 +64,7 @@ const NewEvent = () => {
             <p className='block text-sm font-bold black undefined text-center bold text-white'>Create new Event</p>
             <br/>
               <form onSubmit={handleSubmit}>
+                {/* Title */}
                 <div>
                   <label
                     htmlFor="name"
@@ -50,39 +81,59 @@ const NewEvent = () => {
                       />
                     </div>
                   </div>
+                  {/* Priority */}
+                  <div className="mt-4">
+                    <label
+                      htmlFor="group"
+                      className="block text-sm font-medium text-white undefined"
+                    >
+                      Priority
+                    </label>
+                    <div className="flex flex-col items-start">
+                      <Select 
+                      options={priorityOptions}
+                      className="w-full" />
+                    </div>
+                  </div>
+                  {/* Start Date */}
                     <div className="mt-4">
                       <p className="text-white">Start time</p>
                       <DateTimePicker 
                       onChange={onStartChange}
                       value={startValue}
-                      className='bg-white'
+                      className='bg-white w-full'
                       />
                     </div>
-                      <div className="mt-4">
+                    {/* End Date */}
+                    <div className="mt-4">
                       <div className="mt-4">
                       <p className="text-white">End time</p>
                       <DateTimePicker 
                       onChange={onEndChange}
                       value={endValue}
-                      className='bg-white'
+                      className='bg-white w-full'
                       />
                     </div>
                       </div>
-                          <div className="mt-4">
-                              <label
-                                  htmlFor="password_confirmation"
-                                  className="block text-sm font-medium text-white undefined"
-                              >
-                                Confirm Password
-                              </label>
-                              <div className="flex flex-col items-start">
-                                  <input
-                                      type="password"
-                                      name="password_confirmation"
-                                      className="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                  />
-                              </div>
-                          </div>
+                      {/* Group */}
+                  <div className="mt-4">
+                    <label
+                      htmlFor="group"
+                      className="block text-sm font-medium text-white undefined"
+                    >
+                    Please select group
+                    </label>
+                    <div className="flex flex-col items-start">
+                    <AsyncSelect cacheOptions
+                    defaultOptions
+                    loadOptions={getData}
+                    onChange={(e)=>{
+                      setGroup(e)
+                    }}
+                    className="w-full" />
+                    </div>
+                  </div>
+                  {/* Submit button */}
                           <div className="flex items-center justify-end mt-4">
                               <button
                                   type="submit"

@@ -1,17 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-/* old schema
-const appointmentSchema = new Schema({
-    title: {type: String, required: [true, 'cannot be empty']},
-    startTime: {type: String, require: [true]},
-    endTime: {type: String, require: [true]},
-    date: {type: String, require: [true]},
-    priority: {type: String, require: [true]},
-    group: {type: String, require: [false]},
-    purpose: {type: String, require: [true]},
-    author: {type: String, require: [true]}
-});
-*/ 
+
 const eventSchema = new Schema({
     title: {type: String, required: [true, 'cannot be empty']},
     start: {type: Date, required: [true, 'cannot be empty']},
