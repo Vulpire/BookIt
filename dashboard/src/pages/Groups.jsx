@@ -29,7 +29,7 @@ const Groups = () => {
     function renderDiv(){
       groups.forEach(item => {
         cards.push(
-          <Link key={item._id} className='w-5/6 p-2' to={{pathname: `/groups/${item._id}`}}>
+          <Link key={item._id} className='w-5/6 p-2 ' to={{pathname: `/groups/${item._id}`}}>
             <div className='w-5/6'>
               <Card name={item.groupName} members={item.accepted.length} appts={item.appointments.length} />
             </div>
