@@ -39,7 +39,7 @@ app.use(session({
     secret: 'notsecure',
     resave: false,
     saveUninitialized: false,
-    cookie:{maxAge: 60*60*1000}, //one hour
+    cookie:{maxAge: 24*60*60*1000}, //one hour
     store: new MongoStore({mongoUrl: uri})
 }));
 

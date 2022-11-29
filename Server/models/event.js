@@ -6,6 +6,7 @@ const eventSchema = new Schema({
     start: {type: Date, required: [true, 'cannot be empty']},
     end: {type: Date, required: [true, 'cannot be empty']},
     group: {type: Schema.Types.ObjectId, ref: 'Group', required: [true, "Must be part of a group"]},
+    priority: {type: String, required: [true]},
     author: {type: Schema.Types.ObjectId, ref: 'User', required: [true, "Must have an author group"]},
     description: {type: String, required: [false]}
 })

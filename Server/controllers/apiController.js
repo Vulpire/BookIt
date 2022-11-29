@@ -9,33 +9,48 @@ exports.index = (req,res)=>{
     if(userId){
         User.findById(userId).populate('appointments')
         .then(user=>{
-            console.log(user)
-            console.log(appointments)
             let events = user.appointments;
             res.send(events)
         })
     } else {
-        Event.find()
-        .then(events=>{
-            res.send(events);
-        })
-        .catch(err=>next(err))
+        res.status(400).send()
     }    
 };
 
 exports.newEvent = (req,res)=>{
-    let event = new Event(req.body);
-    event.save();
-    res.status = 200;
-    res.send();
+    let r = req.body;
+    let event = new Event(r);
+    event.author = req.session.user;
+    event.priority = req.body.priority;
+    Group.findById(event.group)
+    .then(group=>{
+        let users = [];
+        users = group.accepted;
+        User.updateMany(
+            { _id: { $in: users } },
+            { $push: {appointments: event._id} },
+            {multi: true}
+        )
+        .then(()=>{
+            event.save();
+            res.status = 200;
+            res.send();
+        })
+        .catch(err=>next(err))
+    })
+    .catch(err=>next(err))
 };
 
 exports.getUser = (req,res)=>{
-    if(req.session.user){
-        res.status(200)
-        res.send()
+    let userId = req.session.user;
+    if(userId){
+        User.findById(userId)
+        .then(user=>{
+            res.status(200)
+            res.send(user)
+        })
     } else {
-        res.status(206)
+        res.status(400)
         res.send()
     }
 };
@@ -86,7 +101,6 @@ exports.logout = (req,res)=>{
             res.status(400).send()
         }            
         else{
-            console.log("deleted")
             res.status(200).send()
         }            
     })
@@ -112,7 +126,7 @@ exports.newGroup = (req,res)=>{
          if(failed.length > 0){
              res.status(400).send("There was an error adding some users")
          } else {
-             group.invited = ids;
+            group.accepted = ids;
             User.updateMany(
                 { _id: { $in: ids } },
                 { $push: {groups: group._id} },
@@ -129,9 +143,8 @@ exports.newGroup = (req,res)=>{
 exports.groupsAdmin = (req,res, next)=>{
     let userId = req.session.user;
     let userIdObj = mongoose.Types.ObjectId(userId)
-    let adminGroups = [];
     if(userId){
-        Group.find({ invited: { "$in" : [userIdObj]}}).where('author').equals(userIdObj)
+        Group.find({ groups: { "$in" : [userIdObj]}}).where('author').equals(userIdObj)
         .then(groups=>{
             res.send(groups);
         })

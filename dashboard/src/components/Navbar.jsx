@@ -25,29 +25,33 @@ const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
   </TooltipComponent>
 );
 
-const Navbar = () => {
+const Navbar = ({onClick}) => {
   const [auth, setAuth] = useState(false);
-  const [render, setRender] = useState(false);
-  const [uName, setuName] = useState("");
-  const [notifs, setNotifs] = useState(false);
-  const isAuth = localStorage.getItem('auth');
   function updateAuth(){
     setAuth(!auth)
   }
+  const [render, setRender] = useState(false);
+  const [notifs, setNotifs] = useState(false);
+  const isAuth = localStorage.getItem('auth');
+  const [user, setUser] = useState("");
+  
 
   useEffect(()=>{
     fetch('/api/user').then(res=>{
-      console.log(res)
-      if(res.status == 200){
+      if(res.ok){
+        let json = res.json()
         setAuth(true)
+        return json;
       } else {
         setAuth(false)
       }
-    }).then(() =>{
-      setuName("Nick")
+    }).then(data=>{
+      if(data){
+        setUser(data)
+      }
     })
   }, [])
-  console.log(auth)
+
 
   //get notifs
   useEffect(()=>{
@@ -105,7 +109,7 @@ const Navbar = () => {
               <p>
                 <span className="text-gray-400 text-14">Hi,</span>{' '}
                 <span className="text-gray-400 font-bold ml-1 text-14">
-                  {uName}
+                  {user.firstName}
                 </span>
               </p>
               <MdKeyboardArrowDown className="text-gray-400 text-14" />
@@ -127,7 +131,10 @@ const Navbar = () => {
           </TooltipComponent>
           }
         {isClicked.notification && (<Notification />)}
-        {isClicked.userProfile && (<UserProfile onClick={updateAuth}/>)}
+        {isClicked.userProfile && (<UserProfile onClick={() => {
+          onClick();
+          updateAuth();
+        }}/>)}
       </div>
     </div>
   );

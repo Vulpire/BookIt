@@ -9,15 +9,29 @@ import { useStateContext } from '../contexts/ContextProvider';
 
 const UserProfile = ({onClick}) => {
   const { setIsClicked, initialState } = useStateContext();
+  const [user, setUser] = useState("");
   // get auth state
   let navigate = useNavigate();
   function loginRed(){
-      navigate('/schedule')
+    navigate('/')
   }
+
+  useEffect(()=>{
+    fetch('/api/user').then(res=>{
+      if(res.ok){
+        let json = res.json()
+        return json;
+      }
+    }).then(data=>{
+      if(data){
+        setUser(data)
+      }
+      console.log(data)
+    })
+  }, [])
 
   function handleSubmit(){
     setIsClicked(initialState)
-
     fetch('/api/logout').then(res=>{
       console.log('response')
     if(res.ok){
@@ -43,12 +57,12 @@ const UserProfile = ({onClick}) => {
       <div className="flex gap-5 items-center mt-6 border-color border-b-1 pb-6">
         <FaUserAlt className="rounded-full h-24 w-24"/>
         <div>
-          <p className="font-semibold text-xl dark:text-gray-200"> Michael Roberts </p>
-          <p className="text-gray-500 text-sm dark:text-gray-400">  Administrator   </p>
-          <p className="text-gray-500 text-sm font-semibold dark:text-gray-400"> info@shop.com </p>
+          <p className="font-semibold text-xl dark:text-gray-200"> {user.firstName} </p>
+          {/* <p className="text-gray-500 text-sm dark:text-gray-400">  Administrator   </p> */}
+          <p className="text-gray-500 text-sm font-semibold dark:text-gray-400"> {user.email} </p>
         </div>
       </div>
-      <div>
+      {/* <div>
         {userProfileData.map((item, index) => (
           <div key={index} className="flex gap-5 border-b-1 border-color p-4 hover:bg-light-gray cursor-pointer  dark:hover:bg-[#42464D]">
             <button
@@ -65,7 +79,7 @@ const UserProfile = ({onClick}) => {
             </div>
           </div>
         ))}
-      </div>
+      </div> */}
       <div className="mt-5">
         
         <button

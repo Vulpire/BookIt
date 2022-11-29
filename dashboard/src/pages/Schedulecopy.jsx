@@ -20,7 +20,23 @@ const localizer = dateFnsLocalizer({
     locales,
 });
 
+
 const Groups = () => {
+  const [auth, setAuth] = useState(false);
+  function updateAuth(){
+    setAuth(!auth)
+  }
+
+  useEffect(()=>{
+    if(auth){
+      fetch('/api').then(res=>{
+        if(res.ok){
+          let json = res.json()
+          return json;
+        } 
+      }).then(jsonResponse => setInitialState(jsonResponse))
+    }    
+}, [auth])
     const { currentMode, activeMenu} = useStateContext();
     let navigate = useNavigate();
     function handleClick(calevent){
@@ -29,12 +45,48 @@ const Groups = () => {
     const [initialState, setInitialState] = useState();
     useEffect(()=>{
       fetch('/api').then(res=>{
-          if(res.ok){
-            let json = res.json()
-            return json;
-        }
+        if(res.ok){
+          let json = res.json()
+          return json;
+        } 
       }).then(jsonResponse => setInitialState(jsonResponse))
   }, [])
+
+  function getEventStyle(event, start, end, isSelected) {
+    try{
+      var style = {
+        backgroundColor: "",
+        borderRadius: '0px',
+        opacity: 1,
+        color: 'black',
+        border: '0px',
+        display: 'block'
+      };
+      if(event.priority == "med"){
+        style.backgroundColor = "#F8FF4B";
+      } else if(event.priority == "high"){
+        style.backgroundColor = "#FF5A5A";
+      } else {
+        style.backgroundColor = "#1d4ed8";
+      }
+      return {
+        style: style
+    };
+    }catch{
+      var style = {
+        backgroundColor: "",
+        borderRadius: '0px',
+        opacity: 0.8,
+        color: 'black',
+        border: '0px',
+        display: 'block'
+      };
+      return {
+        style: style
+      };
+    }
+}
+
   return (
     <div>
         <div className="flex relative dark:bg-main-dark-bg">
@@ -58,7 +110,7 @@ const Groups = () => {
                 }
             >
             <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg navbar w-full ">
-                <Navbar />
+                <Navbar onClick={updateAuth}/>
             </div>
             
             {/* page content */}
@@ -73,6 +125,7 @@ const Groups = () => {
                 views={["month", "agenda"]}
                 style={{ height: 700, margin: "50px" }}
                 messages={{agenda:"Table", month:"Calendar"}}
+                eventPropGetter={(getEventStyle)}
             />
             </div>
 
