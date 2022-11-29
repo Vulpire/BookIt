@@ -153,3 +153,16 @@ exports.groupsAdmin = (req,res, next)=>{
         res.status(400).send();
     }
 }
+
+exports.getGroups = (req,res, next)=>{
+    let UID = req.session.user;
+    if(UID){
+        User.findById(UID).populate('groups')
+        .then(user=>{
+            res.send(user.groups)
+        })
+        .catch(err=>next(err))
+    } else {
+        res.status(400).send()
+    }
+}
